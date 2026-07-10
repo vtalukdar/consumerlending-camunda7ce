@@ -1,4 +1,4 @@
-# Camunda 7 CE - European Consumer Lending
+# Camunda 7 CE - Consumer Lending
 
 This repository gives you a local Camunda 7 setup for a consumer lending process.
 
@@ -14,7 +14,7 @@ If you are new to Camunda and Docker, this README walks you through:
 - Camunda 7 engine and web apps
 - PostgreSQL database
 - Worker service (external task workers)
-- BPMN process in `bpmn/lending/european-consumer-lending.bpmn`
+- BPMN process in `worker-service/src/main/resources/bpmn/european-consumer-lending.bpmn`
 - DMN rules in `dmn/credit-risk.dmn`
 
 ## 1) Prerequisites
@@ -58,41 +58,34 @@ git clone <your-repo-url>
 cd camundaCE-setup
 ```
 
-## 3) Choose the correct environment file
+## 3) Optional: choose a custom env file
 
-This project uses different env files by platform.
+You can start with the default compose command because `docker-compose.yml` already has a safe default for `CAMUNDA_IMAGE`.
 
-- macOS Apple Silicon (M1/M2/M3): `.env.arm`
-- macOS Intel: `.env.local`
-- Windows: `.env.windows`
+If you still want to provide a specific env file manually, these are available:
 
-### How to check your Mac CPU type
-
-```bash
-uname -m
-```
-
-- `arm64` => use `.env.arm`
-- `x86_64` => use `.env.local`
+- `.env.arm`
+- `.env.local`
+- `.env.windows`
 
 ## 4) Start Camunda
 
-### macOS Apple Silicon (M1/M2/M3)
+Generic (recommended):
 
 ```bash
-docker compose --env-file .env.arm up -d
+docker compose up --build
 ```
 
-### macOS Intel
+Optional background mode:
 
 ```bash
-docker compose --env-file .env.local up -d
+docker compose up --build -d
 ```
 
-### Windows (PowerShell)
+Optional with an explicit env file:
 
-```powershell
-docker compose --env-file .env.windows up -d
+```bash
+docker compose --env-file .env.local up --build -d
 ```
 
 ## 5) Confirm services are running
@@ -134,26 +127,30 @@ Default login (if unchanged in your image/config):
 - username: `demo`
 - password: `demo`
 
-## 7) Deploy the BPMN process
+## 7) BPMN deployment behavior (automatic)
 
-1. Open Camunda Cockpit
-2. Go to Deployments
-3. Click New Deployment
-4. Upload `bpmn/lending/european-consumer-lending.bpmn`
-5. Click Deploy
+No manual deployment is needed in the default setup.
 
-Optional via REST API:
+At startup, Camunda is configured to load BPMN files only from:
 
-macOS/Linux:
+- `worker-service/src/main/resources/bpmn`
+
+This means:
+
+- `european-consumer-lending.bpmn` is auto-deployed when the stack starts.
+- Camunda sample processes like `invoice` and `reviewInvoice` are not auto-deployed.
+
+To verify:
+
 ```bash
-curl -X POST \
-  -F "file=@bpmn/lending/european-consumer-lending.bpmn" \
-  http://localhost:8081/engine-rest/deployment/create
+curl -s "http://localhost:8081/engine-rest/process-definition?key=EuropeanConsumerLending"
 ```
 
-Windows (PowerShell):
-```powershell
-curl.exe -X POST -F "file=@bpmn/lending/european-consumer-lending.bpmn" http://localhost:8081/engine-rest/deployment/create
+If you change BPMN and want a clean re-run:
+
+```bash
+docker compose down -v
+docker compose up --build -d
 ```
 
 ## 8) Start a process instance
@@ -272,8 +269,8 @@ docker compose down --remove-orphans
 camundaCE-setup/
   docker-compose.yml
   README.md
-  bpmn/lending/european-consumer-lending.bpmn
   dmn/credit-risk.dmn
   docs/
   worker-service/
+    src/main/resources/bpmn/european-consumer-lending.bpmn
 ```
