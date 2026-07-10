@@ -1,0 +1,1 @@
+Application -> KYC -> AML -> Credit -> Risk -> Fraud -> Offer -> Acceptance -> Disbursement
