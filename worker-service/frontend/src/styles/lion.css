@@ -1,0 +1,186 @@
+/* Lion Framework Base Styles */
+:root {
+    --lion-primary-color: #003399;
+    --lion-secondary-color: #0080FF;
+    --lion-success-color: #00B050;
+    --lion-error-color: #C00000;
+    --lion-warning-color: #FF9900;
+    --lion-neutral-color: #595959;
+    --lion-light-color: #F2F2F2;
+    --lion-border-color: #E0E0E0;
+    --lion-spacing-unit: 8px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: var(--lion-neutral-color);
+    background-color: #ffffff;
+    margin: 0;
+    padding: var(--lion-spacing-unit);
+}
+
+/* Form Container */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px solid var(--lion-border-color);
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--lion-primary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--lion-primary-color);
+    padding-bottom: 1rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--lion-primary-color);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+}
+
+/* Input Fields */
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--lion-neutral-color);
+    margin-bottom: 0.5rem;
+}
+
+.form-field label .required {
+    color: var(--lion-error-color);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--lion-border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: var(--lion-primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 51, 153, 0.1);
+}
+
+.form-field input:disabled,
+.form-field select:disabled {
+    background-color: var(--lion-light-color);
+    cursor: not-allowed;
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Buttons */
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: flex-end;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--lion-primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #002080;
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-secondary {
+    background-color: var(--lion-light-color);
+    color: var(--lion-neutral-color);
+    border: 1px solid var(--lion-border-color);
+}
+
+.btn-secondary:hover {
+    background-color: #e6e6e6;
+}
+
+/* Validation Messages */
+.error-message {
+    color: var(--lion-error-color);
+    font-size: 12px;
+    margin-top: 0.25rem;
+}
+
+.success-message {
+    color: var(--lion-success-color);
+    font-size: 12px;
+    margin-top: 0.25rem;
+}
+
+/* Spinner */
+.spinner {
+    border: 3px solid var(--lion-light-color);
+    border-top: 3px solid var(--lion-primary-color);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contract Signature</title>
+  <style>
+    :root {
+      --lion-primary-color: #003399;
+      --lion-success-color: #00b050;
+      --lion-error-color: #c00000;
+      --lion-neutral-color: #595959;
+      --lion-light-color: #f2f2f2;
+      --lion-border-color: #e0e0e0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: var(--lion-neutral-color);
+      background-color: #ffffff;
+      margin: 0;
+      padding: 8px;
+    }
+    .form-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+      border: 1px solid var(--lion-border-color);
+      border-radius: 4px;
+      background: #ffffff;
+    }
+    .form-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--lion-primary-color);
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--lion-primary-color);
+      padding-bottom: 1rem;
+    }
+    .contract-preview {
+      background-color: var(--lion-light-color);
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin: 2rem 0;
+      border: 1px solid var(--lion-border-color);
+      min-height: 200px;
+      max-height: 400px;
+      overflow-y: auto;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+    .form-field {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+    }
+    .form-field input[type="checkbox"] {
+      margin-top: 0.3rem;
+      margin-right: 0.5rem;
+      cursor: pointer;
+    }
+    .form-field label {
+      font-size: 14px;
+      color: var(--lion-neutral-color);
+      cursor: pointer;
+    }
+    .form-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      justify-content: flex-end;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary {
+      background-color: var(--lion-primary-color);
+      color: white;
+    }
+    .btn-primary:hover:not(:disabled) { background-color: #002080; }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-secondary {
+      background-color: var(--lion-light-color);
+      color: var(--lion-neutral-color);
+      border: 1px solid var(--lion-border-color);
+    }
+    .btn-secondary:hover { background-color: #e6e6e6; }
+    .alert {
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-bottom: 1rem;
+    }
+    .alert-error {
+      background-color: #ffe6e6;
+      border: 1px solid var(--lion-error-color);
+      color: var(--lion-error-color);
+      border-left: 4px solid var(--lion-error-color);
+      display: none;
+    }
+    .success-container {
+      text-align: center;
+      padding: 2rem;
+      display: none;
+    }
+    .success-icon {
+      font-size: 48px;
+      color: var(--lion-success-color);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <div id="errorAlert" class="alert alert-error"></div>
+  <div id="signatureForm">
+    <h1 class="form-title">Review & Sign Loan Contract</h1>
+    <p style="color: var(--lion-neutral-color); margin-bottom: 1rem;">
+      Please review the contract below and digitally sign to confirm
+    </p>
+    <div class="contract-preview">
+      <strong>LOAN AGREEMENT</strong><br><br>
+      This Loan Agreement ("Agreement") is entered into between the Lender and the Borrower.<br><br>
+      <strong>Terms and Conditions:</strong><br>
+      1. Loan Amount: As specified in the proposition<br>
+      2. Interest Rate: As specified in the proposition<br>
+      3. Repayment Term: As specified in the proposition<br>
+      4. Monthly Payment: As specified in the proposition<br>
+      5. Late Payment Fee: 2% of monthly payment<br>
+      6. Prepayment: Allowed without penalty<br>
+      7. Default: If payment is 30 days late, the entire remaining balance becomes due<br><br>
+      <strong>Borrower Responsibilities:</strong><br>
+      - Make monthly payments on time<br>
+      - Maintain adequate insurance<br>
+      - Notify lender of changes in contact information<br><br>
+      <strong>Lender Responsibilities:</strong><br>
+      - Disburse funds within 5 business days<br>
+      - Provide accurate account statements<br>
+      - Process payments promptly<br><br>
+      By signing below, the Borrower acknowledges reading and agreeing to all terms.
+    </div>
+    <form id="mainForm">
+      <div class="form-field">
+        <input type="checkbox" id="agreeCheckbox" name="agree" required />
+        <label for="agreeCheckbox">I have read and agree to the terms and conditions of this loan agreement</label>
+      </div>
+      <div class="form-buttons">
+        <button type="button" class="btn-secondary" id="declineBtn">Decline & Withdraw</button>
+        <button type="submit" class="btn-primary" id="signBtn">Sign & Accept</button>
+      </div>
+    </form>
+  </div>
+  <div id="successMessage" class="success-container">
+    <div class="success-icon">✓</div>
+    <p>Contract has been signed successfully</p>
+  </div>
+</div>
+<script>
+  function getTaskIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("taskId");
+  }
+  function showAlert(message) {
+    const alertEl = document.getElementById("errorAlert");
+    alertEl.textContent = message;
+    alertEl.style.display = "block";
+  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const taskId = getTaskIdFromUrl();
+    if (!taskId) {
+      showAlert("Task ID not found");
+      return;
+    }
+    try {
+      const response = await fetch(`/engine-rest/task/${taskId}/complete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          variables: { contractSigned: { value: true } }
+        })
+      });
+      if (!response.ok) throw new Error(`Submission failed: ${response.statusText}`);
+      document.getElementById("signatureForm").style.display = "none";
+      document.getElementById("successMessage").style.display = "block";
+      setTimeout(() => { window.location.href = "/camunda"; }, 2000);
+    } catch (error) {
+      showAlert(`Error: ${error.message}`);
+    }
+  }
+  function handleDecline() {
+    if (confirm("Are you sure you want to decline the contract?")) {
+      const taskId = getTaskIdFromUrl();
+      if (!taskId) return;
+      fetch(`/engine-rest/task/${taskId}/complete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          variables: { contractSigned: { value: false } }
+        })
+      }).then(() => { window.location.href = "/camunda"; });
+    }
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("mainForm").addEventListener("submit", handleSubmit);
+    document.getElementById("declineBtn").addEventListener("click", handleDecline);
+    if (!getTaskIdFromUrl()) showAlert("Warning: Task ID not found");
+  });
+</script>
+</body>
+</html>

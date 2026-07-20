@@ -29,15 +29,13 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/camunda
       DB_USERNAME: camunda
       DB_PASSWORD: camunda
-      # Keep for compatibility; main control is deployment-resource-pattern below.
       SKIP_EXAMPLES: "true"
       SPRING_APPLICATION_JSON: >
         {
-          "camunda.bpm.auto-deployment-enabled": true,
-          "camunda.bpm.deployment-resource-pattern": "file:/camunda/configuration/resources/bpmn/*.bpmn"
+          "camunda.bpm.auto-deployment-enabled": false
         }
     volumes:
-      - ./worker-service/src/main/resources/bpmn:/camunda/configuration/resources/bpmn:ro
+      - ./worker-service/src/main/resources/public/forms:/camunda/webapps/camunda/app/tasklist/forms:ro
     ports:
       - "8081:8080"
     healthcheck:

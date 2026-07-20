@@ -18,7 +18,7 @@
     </startEvent>
 
     <!-- Customer Information Form -->
-    <userTask id="CustomerInformationTask" name="Enter Customer Information" camunda:formKey="embedded:app:forms/customer-info.html" camunda:assignee="demo">
+    <userTask id="CustomerInformationTask" name="Enter Customer Information" camunda:formKey="embedded:deployment:forms/customer-info.html" camunda:assignee="demo">
       <documentation>Capture customer details: Full Name, Email, Phone, Income, Marital Status, Number of Children</documentation>
       <incoming>Flow_1</incoming>
       <outgoing>Flow_2</outgoing>
@@ -97,14 +97,14 @@
     </endEvent>
 
     <!-- Display Loan Propositions -->
-    <userTask id="LoanPropositionsTask" name="Review Loan Propositions" camunda:formKey="embedded:app:forms/loan-propositions.html" camunda:assignee="demo">
+    <userTask id="LoanPropositionsTask" name="Review Loan Propositions" camunda:formKey="embedded:deployment:forms/loan-propositions.html" camunda:assignee="demo">
       <documentation>Display available loan propositions with different terms, rates, and amounts</documentation>
       <incoming>Flow_CreditPass</incoming>
       <outgoing>Flow_6</outgoing>
     </userTask>
 
     <!-- Select Loan Proposition -->
-    <userTask id="SelectPropositionTask" name="Select Loan Proposition" camunda:formKey="embedded:app:forms/select-proposition.html" camunda:assignee="demo">
+    <userTask id="SelectPropositionTask" name="Select Loan Proposition" camunda:formKey="embedded:deployment:forms/select-proposition.html" camunda:assignee="demo">
       <documentation>Customer selects their preferred loan proposition from available options</documentation>
       <incoming>Flow_6</incoming>
       <outgoing>Flow_7</outgoing>
@@ -118,7 +118,7 @@
     </serviceTask>
 
     <!-- Contract Review &amp; Signature -->
-    <userTask id="ContractSignatureTask" name="Review &amp; Sign Loan Contract" camunda:formKey="embedded:app:forms/contract-signature.html" camunda:assignee="demo">
+    <userTask id="ContractSignatureTask" name="Review &amp; Sign Loan Contract" camunda:formKey="embedded:deployment:forms/contract-signature.html" camunda:assignee="demo">
       <documentation>Customer reviews and digitally signs the loan contract</documentation>
       <incoming>Flow_8</incoming>
       <outgoing>Flow_9</outgoing>

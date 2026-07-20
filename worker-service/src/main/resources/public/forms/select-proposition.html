@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Loan Proposition</title>
+  <style>
+    :root {
+      --lion-primary-color: #003399;
+      --lion-error-color: #c00000;
+      --lion-neutral-color: #595959;
+      --lion-border-color: #e0e0e0;
+    }
+
+    * { box-sizing: border-box; }
+
+    .form-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      border: 1px solid var(--lion-border-color);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--lion-neutral-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    .form-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--lion-primary-color);
+      margin: 0 0 0.5rem;
+      border-bottom: 2px solid var(--lion-primary-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .field { margin-bottom: 1rem; }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.65rem;
+      border: 1px solid var(--lion-border-color);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .alert {
+      display: none;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--lion-error-color);
+      border-left: 4px solid var(--lion-error-color);
+      background: #ffe6e6;
+      color: var(--lion-error-color);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <h1 class="form-title">Confirm Your Selection</h1>
+  <p>Please confirm whether you want to proceed with your chosen proposition.</p>
+
+  <div id="errorAlert" class="alert"></div>
+
+  <form class="form-horizontal" role="form" novalidate>
+    <div class="field">
+      <label for="propositionConfirmed">Selection Confirmation</label>
+      <select id="propositionConfirmed" required cam-variable-name="propositionConfirmed" cam-variable-type="Boolean">
+        <option value="">-- Select --</option>
+        <option value="true">Yes, confirm my selection</option>
+        <option value="false">No, I do not confirm</option>
+      </select>
+    </div>
+  </form>
+</div>
+
+<script cam-script type="text/form-script">
+  var errorAlert = document.getElementById("errorAlert");
+
+  function showError(message) {
+    errorAlert.textContent = message;
+    errorAlert.style.display = "block";
+  }
+
+  function clearError() {
+    errorAlert.textContent = "";
+    errorAlert.style.display = "none";
+  }
+
+  camForm.on("submit", function(evt) {
+    clearError();
+
+    var value = document.getElementById("propositionConfirmed").value;
+    if (!value) {
+      showError("Choose an option before completing the task.");
+      evt.submitPrevented = true;
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+.propositions-list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.proposition-card {
+    border: 2px solid var(--lion-border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.proposition-card:hover {
+    border-color: var(--lion-primary-color);
+    box-shadow: 0 4px 12px rgba(0, 51, 153, 0.1);
+}
+
+.proposition-card h3 {
+    color: var(--lion-primary-color);
+    margin: 0 0 1rem 0;
+}
+
+.prop-details {
+    background-color: var(--lion-light-color);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.prop-details p {
+    margin: 0.5rem 0;
+    font-size: 14px;
+}
+
+.proposition-card .select-btn {
+    width: 100%;
+}

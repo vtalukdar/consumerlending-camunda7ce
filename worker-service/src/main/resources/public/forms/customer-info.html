@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Information Form</title>
+  <style>
+    :root {
+      --lion-primary-color: #003399;
+      --lion-error-color: #c00000;
+      --lion-neutral-color: #595959;
+      --lion-light-color: #f2f2f2;
+      --lion-border-color: #e0e0e0;
+    }
+
+    * { box-sizing: border-box; }
+
+    .form-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      border: 1px solid var(--lion-border-color);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--lion-neutral-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    .form-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--lion-primary-color);
+      margin: 0 0 0.5rem;
+      border-bottom: 2px solid var(--lion-primary-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .form-subtitle { margin: 0 0 1.5rem; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .field { margin-bottom: 1rem; }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.65rem;
+      border: 1px solid var(--lion-border-color);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .required { color: var(--lion-error-color); }
+
+    .alert {
+      display: none;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--lion-error-color);
+      border-left: 4px solid var(--lion-error-color);
+      background: #ffe6e6;
+      color: var(--lion-error-color);
+      font-size: 13px;
+    }
+
+    .hint { font-size: 12px; color: #666; }
+
+    @media (max-width: 768px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1 class="form-title">Customer Information</h1>
+    <p class="form-subtitle">Enter your personal and financial details to continue.</p>
+
+    <div id="errorAlert" class="alert"></div>
+
+    <form class="form-horizontal" role="form" novalidate>
+      <div class="field">
+        <label for="fullName">Full Name <span class="required">*</span></label>
+        <input id="fullName" type="text" maxlength="100" required cam-variable-name="customerFullName" cam-variable-type="String" />
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input id="email" type="email" maxlength="100" required cam-variable-name="customerEmail" cam-variable-type="String" />
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number <span class="required">*</span></label>
+          <input id="phone" type="tel" maxlength="20" required cam-variable-name="customerPhone" cam-variable-type="String" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="maritalStatus">Marital Status <span class="required">*</span></label>
+          <select id="maritalStatus" required cam-variable-name="customerMaritalStatus" cam-variable-type="String">
+            <option value="">-- Select Marital Status --</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="divorced">Divorced</option>
+            <option value="widowed">Widowed</option>
+            <option value="domestic_partnership">Domestic Partnership</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="numberOfChildren">Number of Children <span class="required">*</span></label>
+          <input id="numberOfChildren" type="number" min="0" max="20" required cam-variable-name="customerNumberOfChildren" cam-variable-type="Integer" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="income">Annual Income (EUR) <span class="required">*</span></label>
+        <input id="income" type="number" min="0" step="0.01" required cam-variable-name="customerIncome" cam-variable-type="Double" />
+        <div class="hint">Enter gross annual income.</div>
+      </div>
+    </form>
+  </div>
+
+  <script cam-script type="text/form-script">
+    var errorAlert = document.getElementById("errorAlert");
+
+    function showError(message) {
+      errorAlert.textContent = message;
+      errorAlert.style.display = "block";
+    }
+
+    function clearError() {
+      errorAlert.textContent = "";
+      errorAlert.style.display = "none";
+    }
+
+    function isValidPhone(phone) {
+      var re = /^[\d\s\-+()]+$/;
+      return re.test(phone) && phone.replace(/\D/g, "").length >= 9;
+    }
+
+    camForm.on("submit", function(evt) {
+      clearError();
+
+      var fullName = (document.getElementById("fullName").value || "").trim();
+      var email = (document.getElementById("email").value || "").trim();
+      var phone = (document.getElementById("phone").value || "").trim();
+      var income = Number(document.getElementById("income").value);
+      var children = Number(document.getElementById("numberOfChildren").value);
+
+      if (fullName.length < 2) {
+        showError("Full Name must be at least 2 characters.");
+        evt.submitPrevented = true;
+        return;
+      }
+
+      if (!email || document.getElementById("email").checkValidity() === false) {
+        showError("Enter a valid email address.");
+        evt.submitPrevented = true;
+        return;
+      }
+
+      if (!isValidPhone(phone)) {
+        showError("Enter a valid phone number.");
+        evt.submitPrevented = true;
+        return;
+      }
+
+      if (!Number.isFinite(income) || income < 0) {
+        showError("Income must be a positive number.");
+        evt.submitPrevented = true;
+        return;
+      }
+
+      if (!Number.isInteger(children) || children < 0 || children > 20) {
+        showError("Number of children must be between 0 and 20.");
+        evt.submitPrevented = true;
+        return;
+      }
+    });
+  </script>
+</body>
+</html>

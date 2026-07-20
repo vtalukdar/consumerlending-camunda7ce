@@ -1,0 +1,24 @@
+{
+  "name": "camunda-forms",
+  "version": "1.0.0",
+  "description": "ING Lion-based forms for Camunda BPM",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lion/form": "^0.18.0",
+    "@lion/input": "^0.18.0",
+    "@lion/textarea": "^0.18.0",
+    "@lion/select": "^0.18.0",
+    "@lion/button": "^0.18.0",
+    "lit": "^3.0.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "vite": "^5.0.0"
+  }
+}
